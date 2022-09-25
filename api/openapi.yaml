@@ -1,0 +1,516 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: edson@michaque.com
+  description: |-
+    This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about
+    Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
+    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
+    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
+
+    _If you're looking for the Swagger 2.0/OAS 2.0 version of Petstore, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the `Edit > Load Petstore OAS 2.0` menu option!_
+
+    Some useful links:
+    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Petstore - OpenAPI 3.0
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: https://petstore3.swagger.io
+security:
+- BasicAuth: []
+- BearerAuth: []
+- ApiKeyAuth: []
+tags:
+- description: SMS
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+  name: sms
+paths:
+  /v1/sms/networks:
+    get:
+      description: Returns a single pet
+      operationId: list-networks
+      parameters:
+      - description: ID of pet to return
+        explode: true
+        in: query
+        name: country_code
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Network'
+                type: array
+          description: successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected Error
+      summary: List networks
+      tags:
+      - sms
+      x-accepts: application/json
+  /v1/sms/networks/{networkId}:
+    get:
+      description: Returns a single pet
+      operationId: get-network
+      parameters:
+      - explode: false
+        in: path
+        name: networkId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: ID of pet to return
+        explode: true
+        in: query
+        name: country_code
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Network'
+          description: successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected Error
+      summary: Get network
+      tags:
+      - sms
+      x-accepts: application/json
+  /v1/sms/networks/{networkId}/pricing:
+    get:
+      description: Returns a single pet
+      operationId: get-pricing
+      parameters:
+      - explode: false
+        in: path
+        name: networkId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Pricing'
+                type: array
+          description: successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected Error
+      summary: List network rates
+      tags:
+      - sms
+      x-accepts: application/json
+    put:
+      description: Returns a single pet
+      operationId: create-pricing
+      parameters:
+      - explode: false
+        in: path
+        name: networkId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected Error
+      summary: Create network price
+      tags:
+      - sms
+      x-accepts: application/json
+  /v1/sms/messages:
+    get:
+      description: Update an existing pet by Id
+      operationId: list-messages
+      parameters:
+      - explode: true
+        in: query
+        name: inbox
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Message'
+                type: array
+          description: Successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+        "405":
+          description: Validation exception
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected Error
+      summary: List messages
+      tags:
+      - sms
+      x-accepts: application/json
+    post:
+      description: Update an existing pet by Id
+      operationId: create-message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMessageInput'
+        description: Update an existent pet in the store
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: Successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+        "405":
+          description: Validation exception
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected Error
+      summary: Create Message
+      tags:
+      - sms
+      x-content-type: application/json
+      x-accepts: application/json
+  /v1/sms/messages/{messageId}:
+    delete:
+      description: delete a message
+      operationId: delete-message
+      parameters:
+      - description: ""
+        explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: Pet id to delete
+        explode: false
+        in: path
+        name: messageId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "400":
+          description: Invalid pet value
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected Error
+      summary: Deletes a message
+      tags:
+      - sms
+      x-accepts: application/json
+    get:
+      description: Returns a single pet
+      operationId: get-message
+      parameters:
+      - description: ID of pet to return
+        explode: false
+        in: path
+        name: messageId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected Error
+      summary: Get message
+      tags:
+      - sms
+      x-accepts: application/json
+  /v1/sms/messages/{messageId}/send:
+    post:
+      description: Returns a single pet
+      operationId: send-message
+      parameters:
+      - description: ID of pet to return
+        explode: false
+        in: path
+        name: messageId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected Error
+      summary: Sends a message
+      tags:
+      - sms
+      x-accepts: application/json
+  /v1/sms/messages/{messageId}/cancel:
+    post:
+      description: Returns a single pet
+      operationId: cancel-message
+      parameters:
+      - description: ID of pet to return
+        explode: false
+        in: path
+        name: messageId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unexpected Error
+      summary: Cancel a message
+      tags:
+      - sms
+      x-accepts: application/json
+components:
+  requestBodies:
+    Message:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+      description: Pet object that needs to be added to the store
+  schemas:
+    Pricing:
+      example:
+        cost_per_unit: 0.8008281904610115
+      properties:
+        cost_per_unit:
+          type: number
+      type: object
+    Cost:
+      example:
+        currency: MZN
+        value: 1
+      properties:
+        currency:
+          example: MZN
+          type: string
+        value:
+          example: 1
+          type: number
+      type: object
+    Network:
+      example:
+        created_at: 6
+        id: 0
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: integer
+      type: object
+    Message:
+      example:
+        reason: reason
+        cost:
+          currency: MZN
+          value: 1
+        created_at: 2000-01-23T04:56:07.000+00:00
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        inbox: incoming
+        status: REJECTED
+      properties:
+        id:
+          format: uuid
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        status:
+          enum:
+          - PENDING
+          - REJECTED
+          example: REJECTED
+          type: string
+        reason:
+          type: string
+        cost:
+          $ref: '#/components/schemas/Cost'
+        inbox:
+          enum:
+          - incoming
+          - outgoing
+          type: string
+      type: object
+    CreateMessageInput:
+      example:
+        callback_url: callback_url
+        network_id: 0
+        from: from
+        to:
+        - to
+        - to
+      properties:
+        to:
+          items:
+            type: string
+          type: array
+        from:
+          type: string
+        network_id:
+          type: integer
+        callback_url:
+          type: string
+      type: object
+    Error:
+      example:
+        code: 0
+        type: type
+        message: message
+      properties:
+        code:
+          format: int32
+          type: integer
+        type:
+          type: string
+        message:
+          type: string
+      type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+    BearerAuth:
+      scheme: bearer
+      type: http
+    ApiKeyAuth:
+      in: header
+      name: X-API-Key
+      type: apiKey
+
